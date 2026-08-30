@@ -560,7 +560,10 @@ static void ImDrawList_AddBezierWithArrows(ImDrawList* drawList, const ImCubicBe
 
         ImDrawList_PathBezierOffset(drawList, half_thickness, curve.P3, curve.P2, curve.P1, curve.P0);
 
-        drawList->PathStroke(color, true, strokeThickness);
+        // Dear ImGui 1.92.8 swapped PathStroke's last two arguments: it was (col, bool closed,
+        // float thickness) and is now (col, float thickness, ImDrawFlags flags). The old order
+        // passed the thickness where the flags go, which trips an assert inside AddPolyline.
+        drawList->PathStroke(color, strokeThickness, ImDrawFlags_Closed);
     }
 }
 
