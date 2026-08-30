@@ -31,10 +31,15 @@ inline bool operator!=(const ImVec2& lhs, const ImVec2& rhs)
 }
 # endif
 
+// Dear ImGui defines this itself once IMGUI_DEFINE_MATH_OPERATORS is set, and imgui_internal.h
+// sets it. IMGUI_DEFINE_MATH_OPERATORS_IMPLEMENTED is the flag imgui.h raises when it has, so it
+// is the one thing that answers "has this already been declared" for every version either way.
+# if !defined(IMGUI_DEFINE_MATH_OPERATORS_IMPLEMENTED)
 inline ImVec2 operator*(const float lhs, const ImVec2& rhs)
 {
     return ImVec2(lhs * rhs.x, lhs * rhs.y);
 }
+# endif
 
 # if IMGUI_VERSION_NUM < 18955
 inline ImVec2 operator-(const ImVec2& lhs)
